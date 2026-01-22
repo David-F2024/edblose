@@ -1,0 +1,42 @@
+Commandes GIT à utiliser dans le projet edblose
+
+  //******Initialisation de son compte GIT dans le dossier d'envoie
+   git init
+   git config --global user.email 'gaella2012@gmail.com'
+   
+   //****Envoie du dossier local vers le dossier GITHUB
+   git add .  //ajout de tous les fichiers du dossier
+   git commit -m 'ajout du dossier'    //préparation des fichiers à envoyer
+   git branch -m main //création de la branche principale
+   git remote add origin https://github.com/DAvid2024/nomdossier.git précision du compte et du dossier github
+   git push origin main  // faire le push (envoie ) vers le dossier de la branche main
+   
+   
+   //****pour vérifier s'il y a eu modification du dossier 
+   git status
+   
+   
+   //*****Faire toujours un rafraichissement avant toute opération 
+   git fetch
+   git pull origin main
+   
+   
+   //****pour ajouter un nouveau fichier créé dans son projet dans github
+   git add nom_fichier
+   git commit -m
+   git push origin main
+   
+   
+   //****pour supprimer un fichier dans github
+   git rm nom_fichier_à_supprimer
+   git commit -m 'supression'
+   git push origin main
+   
+   
+   //*****pour récupérer un dossier depuis github
+   git clone https://github.com/DAvid2024/nomdossier.git
+   
+   
+   
+   
+   
