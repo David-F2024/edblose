@@ -6,7 +6,15 @@
     <a href="../../index2.html"><b>EDBLOSE</b></a>
   </div>
   <!-- /.login-logo -->
-  <div class="login-box-body">
+  <div class="login-box-body"><script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' /* optional */
+    });
+  });
+</script>
     <p class="login-box-msg">Démarrer votre session</p>
 
     <form action="../../index2.html" method="post">
