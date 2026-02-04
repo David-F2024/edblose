@@ -1,0 +1,10 @@
+{% include "head.html" %}
+
+<h1>Bienvenue {{ user_name }} !</h1>
+<p>Vous êtes connecté avec succès.</p>
+
+<!-- Bouton Déconnexion -->
+<a href="{% url 'logout' %}" class="btn btn-danger">Déconnexion</a>
+
+
+{% include "footer.html" %}

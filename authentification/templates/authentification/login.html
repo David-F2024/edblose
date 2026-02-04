@@ -9,15 +9,28 @@
   <div class="login-box-body">
     <p class="login-box-msg">Démarrer votre session</p>
 
-    <form action="../../index2.html" method="post">
+    <!-- Afficher les erreurs dans le template -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+
+      {% csrf_token %}
+
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Code/E-mail">
+        <!--  <input type="email" class="form-control" placeholder="Code/E-mail"> -->
+        <input type="text" name="identifiant" class="form-control" placeholder="Code / Email" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Mot de passe">
+
+      <div class="form-group has-feedback"> 
+        <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
+
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
