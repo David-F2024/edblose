@@ -135,3 +135,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Durée de la session (en secondes),  Exemple : 7 jours
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False # La session ne s'efface PAS à la fermeture du navigateur
+SESSION_SAVE_EVERY_REQUEST = True # Rafraîchir la session à chaque requête
+
+
+
+

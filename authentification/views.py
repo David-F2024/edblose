@@ -4,46 +4,57 @@ from django.template import loader
 from django.contrib import messages
 from .models import TUser
 from django.db.models import Q # Pour créer des filtres complexes avec OR
-from .auth_backends import logout_view
+from .decorators import login_required_custom
 
 # Vue pour gérer le login
 def login_view(request):
-    # On vérifie si le formulaire a été soumis en POST
-    if request.method == "POST":
-        # On récupère les données du formulaire
-        identifiant = request.POST.get("identifiant")  # l'email ou le code utilisateur
-        password = request.POST.get("password")        # le mot de passe
+    # Si déjà connecté, on va directement sur index
+    if request.session.get('user_id'):
+        return redirect('index')
 
-        # On filtre les utilisateurs dans la table TUser, le mot de passe doit correspondre, l'identifiant doit correspondre à l'email OU au code utilisateur
+    if request.method == "POST":
+        identifiant = request.POST.get("identifiant")
+        password = request.POST.get("password")
+
         users = TUser.objects.filter(
             mdp=password
         ).filter(
             Q(mail_user=identifiant) | Q(cd_user=identifiant)
         )
 
-        # On vérifie s'il y a un utilisateur correspondant
         if users.exists():
-            # On prend le premier utilisateur trouvé
             user = users.first()
-            
-            # Connexion réussie : on crée des variables de session
-            request.session['user_id'] = user.idt_user       # stocke l'ID de l'utilisateur
-            request.session['user_name'] = user.nm_user     # stocke le nom de l'utilisateur
-            
-            # redirection vers index.html
-            return redirect('index')
+
+            # Création des variables de session
+            request.session['user_id'] = user.idt_user
+            request.session['user_name'] = user.nm_user
+
+            # Redirection vers la page demandée si elle existe
+            next_page = request.session.get('next', 'index')
+            if 'next' in request.session:
+                del request.session['next']
+
+            return redirect(next_page)
         else:
-            # Si aucun utilisateur ne correspond, on affiche un message d'erreur
             messages.error(request, "Identifiant ou mot de passe incorrect")
-  
-    return render(request, "authentification/login.html") # Affiche la page login.html
+
+    return render(request, "authentification/login.html")
 
 # Vue pour afficher la page index.html après connexion
 def index_view(request):
     # Sécurité : vérifier si l'utilisateur est connecté
     if not request.session.get('user_id'):
-        return redirect('login')
-
+       return redirect('login')
     return render(request, "index.html")
 
+#@login_required_custom
+#def index_view(request):
+   ## Vue protégée par le décorateur
+   ## return render(request, "index.html")
 
+# Déconnecte l'utilisateur en supprimant la session
+def logout_view(request):
+    # Déconnexion
+    request.session.flush()  # supprime toutes les variables de session
+    messages.success(request, "Vous êtes déconnecté.")
+    return redirect('login')
